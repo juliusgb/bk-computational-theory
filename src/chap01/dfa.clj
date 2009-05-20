@@ -1,7 +1,7 @@
 (defn make-transition [from-state alphabet-symbols to-states]
-  "Returns a transition table (map) that shows the state in which the each of
-the alphabet symbols leads to. The order of the alphabet symbols and the
-to-states is important.
+  "Returns a transition table (map) for a single state, from-state, that shows
+the state in which the each of the alphabet symbols leads to.
+The order of the alphabet symbols and the to-states is important.
 The first symbol in the list of alphabet-symbols leads to the first state in
 the the list of to-states if the machine was in the from-state."
   {(keyword from-state)
