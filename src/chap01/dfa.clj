@@ -1,3 +1,4 @@
+(ns src.chap01.dfa)
 
 (defn make-inner-transition [alphabet-symbols to-states]
   "Returns a transition table (map) that gives the states that the alphabet
@@ -31,15 +32,18 @@ the the list of to-states if the machine was in the from-state."
               (into combo single-state-transitions))))
   single-state-transitions {}))
 
+
 (defn state-after-transition [from-state alph-symbol trans-table]
   "Returns the next state the alph[abet] symbol lead to based on the
 trans[ition] table."
   (let [to-states (trans-table (keyword from-state))]
     (to-states (keyword alph-symbol))))
 
+
 (defn make-final-states [& final-states]
   "Return a set of final states."
   (set final-states))
+
 
 (defn make-dfa [all-states alph-list trans-table start-state final-states]
   "Returns a dfa."
@@ -65,7 +69,6 @@ trans[ition] table."
                                             (dfa :trans-table))
                     (rest inputs))))
    (dfa :start-state) (map str inputs)))
-
 
 
 (defn run-dfa [inputs dfa]
