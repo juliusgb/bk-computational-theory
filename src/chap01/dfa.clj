@@ -1,4 +1,5 @@
-(ns chap01.dfa)
+(ns src.chap01.dfa
+  (:use clojure.contrib.test-is))
 
 (defn make-inner-transition [alphabet-symbols to-states]
   "Returns a transition table (map) that gives the states that the alphabet
@@ -95,14 +96,27 @@ trans[ition] table."
 (def m1-dfa (make-dfa m1-all-states m1-alph-list m1-trans-table
                       m1-start-state m1-fin-state))
 
-(println "\nL(M1)")
-(println (run-dfa '() m1-dfa))         ;; yes
-(run-dfa '(0) m1-dfa)        ;; no
-(run-dfa '(1) m1-dfa)        ;; yes
-(run-dfa '(0 1) m1-dfa)      ;; yes
-(run-dfa '(1 1) m1-dfa)      ;; yes
-(run-dfa '(1 0 0) m1-dfa)    ;; yes
-(run-dfa '(1 1 0) m1-dfa)    ;; no
+(deftest test-m1
+  (is (= "accept empty input"
+         (run-dfa '() m1-dfa))
+      "Empty input should be accepted.")
+  (is (= "un-acceptable - q1"
+         (run-dfa '(0) m1-dfa)))
+  (is (= "accept - q2"
+         (run-dfa '(1) m1-dfa))
+      "String ending with a 1 should be accepted in state q2.")
+  (is (= "accept - q2"
+         (run-dfa '(0 1) m1-dfa))
+      "String ending with a 1 should be accepted in state q2.")
+  (is (= "accept - q2"
+         (run-dfa '(1 1) m1-dfa))
+      "String ending with a 1 should be accepted in state q2.")
+  (is (= "accept - q2"
+         (run-dfa '(1 0 0) m1-dfa)))
+  (is (= "un-acceptable - q1"
+         (run-dfa '(1 1 0) m1-dfa))))
+
+(run-tests)
 
 
 ;; ITC page 37, Fig 1.8, M2 - easier.
