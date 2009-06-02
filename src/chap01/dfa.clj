@@ -1,4 +1,4 @@
-(ns src.chap01.dfa)
+(ns chap01.dfa)
 
 (defn make-inner-transition [alphabet-symbols to-states]
   "Returns a transition table (map) that gives the states that the alphabet
