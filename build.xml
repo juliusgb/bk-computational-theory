@@ -1,32 +1,43 @@
 <?xml version="1.0" ?>
 
-<project name="bk-computational-theory" default="compile" basedir=".">
-  <description>Implements some models in Sipser's book.</description>
+<!-- build from http://www.lithinos.com/Compiling-Clojure-applications-using-Ant.html -->
 
-  <property file="local.properties"/>
+<project name="bk-computational-theory" default="init" basedir=".">
+  <description>Implements some models in Sipser's book.</description>
 
   <property name="src.dir" location="src" />
   <property name="classes.dir" location="classes" />
-  <property name="libs.dir" location="lib" />
+  <property name="lib.dir" location="lib" />
+  <property name="clojure_jar" location="${lib.dir}/clojure.jar" />
+  <property name="contrib_jar" location="${lib.dir}/clojure-contrib.jar" />
   <property name="tests.dir" location="test" />
   <property name="dist.dir" location="dist" />
-  <property name="dfa.jar" location="${dist}/dfa.jar" />
+  <property name="dfa_jar" location="${dist.dir}/dfa.jar" />
+
+  <!-- What was in the build.properties -->
+  <property name="app_file" value="${src.dir}/chap01/dfa.clj" />
+  <property name="app" value="src.chap01.dfa" />
+  <property name="vendor" value="Juliusgb" />
+  <property name="title" value="DFA"/>
+  <property name="version" value="0.1" />
+
 
   <path id="project-classpath">
-    <pathelement location="${clojure_jar}"/>
-    <pathelement location="${contrib_jar}"/>
-    <path location="${classes.dir}"/>
-    <path location="${source.dir}"/>
-    <fileset dir="${libs.dir}">
+    <pathelement location="${basedir}"/>
+    <pathelement location="${classes.dir}"/>
+    <pathelement location="${clojure_jar}" />
+    <pathelement location="${contrib_jar}" />
+    <fileset dir="${lib.dir}">
       <include name="*.jar"/>
     </fileset>
   </path>
 
+
   <target name="clean" description="Remove generated files">
-    <delete file="${comp-theory.jar}"/>
     <delete dir="${classes.dir}"/>
     <delete dir="${dist.dir}"/>
   </target>
+
 
   <target name="init" depends="clean">
     <tstamp/>
@@ -34,28 +45,40 @@
     <mkdir dir="${dist.dir}" />
   </target>
 
-  <target name="compile" depends="init" description="Compile sources">
-    <java classname="clojure.lang.Compile" fork="true">
-    <classpath>
-      <pathelement location="${basedir}"/>
-      <pathelement location="${source.dir}"/>
-      <pathelement location="${classes.dir}"/>
-      <pathelement location="${clojure_jar}"/>
-      <pathelement location="${contrib_jar}"/>
-    </classpath>
-    <sysproperty key="clojure.compile.path" value="${classses.dir}"/>
-    <arg value="${dfa}"/>
+
+  <target name="compile" depends="init">
+    <echo message="Compiling ${app}" />
+
+    <java classname="clojure.lang.Compile" fork="true" failonerror="true">
+      <classpath refid="project-classpath" />
+      <sysproperty key="clojure.compile.path" value="${classes.dir}" />
+      <arg value="${app}" />
     </java>
+
+    <jar destfile="${dfa_jar}" basedir="${classes.dir}" index="true">
+      <zipfileset src="${clojure_jar}" includes="**/*.class" />
+      <zipfileset src="${contrib_jar}" includes="**/*.class" />
+      <manifest>
+        <attribute name="Implementation-Vendor" value="${vendor}" />
+        <attribute name="Implementation-Title" value="${title}" />
+        <attribute name="Implementation-Version" value="${version}" />
+        <attribute name="Main-Class" value="${app}" />
+        <attribute name="Class-Path" value="." />
+      </manifest>
+    </jar>
   </target>
 
-  <target name="test" description="Run tests">
-    <java fork="true" classname="clojure.lang.Script">
-      <classpath>
-          <path refid="project-classpath"/>
-          <path location="${basedir}"/>
-      </classpath>
-      <arg value="${tests.dir}/run.clj"/>
-    </java>
+  <target name="run" depends="compile">
+    <fail message="There is no ${dfa_jar} JAR file. You must execute the
+                   command 'ant' before you execute 'ant run'.">
+      <condition>
+        <not>
+          <available file="${dfa_jar}" />
+        </not>
+      </condition>
+    </fail>
+    <echo message="Running ${app}" />
+    <java jar="${dfa_jar}" fork="true" failonerror="true" />
   </target>
 
 </project>
