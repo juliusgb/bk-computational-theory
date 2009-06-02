@@ -60,11 +60,9 @@ trans[ition] table."
   ((fn [state inputs]
      (cond (and (not (contains? (dfa :final-states) state))
                 (empty? inputs))
-;             (str "un-acceptable - " state)
              {(keyword "un-acceptable") state}
            (and (contains? (dfa :final-states) state)
                 (empty? inputs))
-;             (str "accept - " state)
              {(keyword "accept") state}
            :else
              (recur (state-after-transition state
