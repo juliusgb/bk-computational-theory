@@ -154,20 +154,6 @@ trans[ition] table."
 (run-tests)
 
 
-;; test data
-;(println "\nL(M2)")
-;(run-dfa '() m2-dfa)       ;; yes
-;(run-dfa '(0) m2-dfa)      ;; no
-;(run-dfa '(1) m2-dfa)      ;; yes
-;(run-dfa '(0 0) m2-dfa)    ;; no
-;(run-dfa '(1 1) m2-dfa)    ;; yes
-;(run-dfa '(0 0 1) m2-dfa)  ;; yes
-
-;; test data from the book (page 37)
-;(run-dfa '(1 1 0) m2-dfa)    ;; no
-;(run-dfa '(1 1 0 1) m2-dfa)  ;; yes
-
-
 ;; Page 38, Example 1.9, Figure 10.
 ;; L(M3) = {w | w is empty string or ends in a 0}.
 (def m3-alph-list '(0 1))
