@@ -59,10 +59,12 @@ trans[ition] table."
   ((fn [state inputs]
      (cond (and (not (contains? (dfa :final-states) state))
                 (empty? inputs))
-             (println "un-acceptable input")
+;             (println "un-acceptable input")
+             (str "un-acceptable - " state)
            (and (contains? (dfa :final-states) state)
                 (empty? inputs))
-             (println "accept input -" state)
+;             (println "accept input -" state)
+             (str "accept - " state)
            :else
              (recur (state-after-transition state
                                             (first inputs)
@@ -75,7 +77,8 @@ trans[ition] table."
   (let [proc-label (first (dfa :start-state))
         start-state (second (dfa :start-state))]
     (if (and (= "unprocessed" proc-label) (empty? inputs))
-      (println "accept empty input")
+;      (println "accept empty input")
+      "accept empty input"
       (run-dfa-helper inputs (assoc dfa :start-state start-state)))))
 
 
@@ -96,7 +99,7 @@ trans[ition] table."
                       m1-start-state m1-fin-state))
 
 (println "\nL(M1)")
-(run-dfa '() m1-dfa)         ;; yes
+(println (run-dfa '() m1-dfa))         ;; yes
 (run-dfa '(0) m1-dfa)        ;; no
 (run-dfa '(1) m1-dfa)        ;; yes
 (run-dfa '(0 1) m1-dfa)      ;; yes
@@ -170,8 +173,8 @@ trans[ition] table."
 
 
 (println "\nL(M4)")
-(run-dfa '() m4-dfa)              ;; yes
-(run-dfa '("a") m4-dfa)           ;; yes - q1
+(println (run-dfa '() m4-dfa))              ;; yes
+(println (run-dfa '("a") m4-dfa))           ;; yes - q1
 (run-dfa '("b") m4-dfa)           ;; yes - r1
 (run-dfa '("a" "a") m4-dfa)       ;; yes - q1
 (run-dfa '("b" "b") m4-dfa)       ;; yes - r1
