@@ -116,8 +116,6 @@ trans[ition] table."
   (is (= "un-acceptable - q1"
          (run-dfa '(1 1 0) m1-dfa))))
 
-(run-tests)
-
 
 ;; ITC page 37, Fig 1.8, M2 - easier.
 ;; dfa: L(M2) = {w | w ends in a 1}.
@@ -132,18 +130,42 @@ trans[ition] table."
 (def m2-dfa (make-dfa m2-all-states m2-alph-list m2-trans-table
                       m2-start-state m2-fin-sate))
 
+
+(deftest test-m2
+  (is (= "accept empty input"
+         (run-dfa '() m2-dfa))
+      "Empty input should be accepted.")
+  (is (= "un-acceptable - q1"
+         (run-dfa '(0) m2-dfa)))
+  (is (= "accept - q2"
+         (run-dfa '(1) m2-dfa)))
+  (is (= "un-acceptable - q1"
+         (run-dfa '(0 0) m2-dfa)))
+  (is (= "accept - q2"
+         (run-dfa '(1 1) m2-dfa)))
+  (is (= "accept - q2"
+         (run-dfa '(0 0 1) m2-dfa)))
+  (is (= "un-acceptable - q1"
+         (run-dfa '(1 1 0) m2-dfa)))
+  (is (= "accept - q2"
+         (run-dfa '(1 1 0 1) m2-dfa))))
+
+
+(run-tests)
+
+
 ;; test data
-(println "\nL(M2)")
-(run-dfa '() m2-dfa)       ;; yes
-(run-dfa '(0) m2-dfa)      ;; no
-(run-dfa '(1) m2-dfa)      ;; yes
-(run-dfa '(0 0) m2-dfa)    ;; no
-(run-dfa '(1 1) m2-dfa)    ;; yes
-(run-dfa '(0 0 1) m2-dfa)  ;; yes
+;(println "\nL(M2)")
+;(run-dfa '() m2-dfa)       ;; yes
+;(run-dfa '(0) m2-dfa)      ;; no
+;(run-dfa '(1) m2-dfa)      ;; yes
+;(run-dfa '(0 0) m2-dfa)    ;; no
+;(run-dfa '(1 1) m2-dfa)    ;; yes
+;(run-dfa '(0 0 1) m2-dfa)  ;; yes
 
 ;; test data from the book (page 37)
-(run-dfa '(1 1 0) m2-dfa)    ;; no
-(run-dfa '(1 1 0 1) m2-dfa)  ;; yes
+;(run-dfa '(1 1 0) m2-dfa)    ;; no
+;(run-dfa '(1 1 0 1) m2-dfa)  ;; yes
 
 
 ;; Page 38, Example 1.9, Figure 10.
