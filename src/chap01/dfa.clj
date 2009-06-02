@@ -82,6 +82,7 @@ trans[ition] table."
       {(keyword "accept empty input") start-state}
       (run-dfa-helper inputs (assoc dfa :start-state start-state)))))
 
+
 ;;-------------------------------------------------------------------------
 ;; TESTS
 ;; TODO: separate out these tests into their own file.
@@ -151,25 +152,25 @@ one 1 or an even number of 0s follow the last 1."
 
 ;; Page 38, Example 1.9, Fig 10.
 ;; L(M3) = {w | w is empty string or ends in a 0}.
-(def m3-alph-list '(0 1))
-(def m3-trans-1 (make-transition "q1" m2-alph-list '("q1" "q2")))
-(def m3-trans-2 (make-transition "q2" m2-alph-list '("q1" "q2")))
-(def m3-trans-table (combine-trans m3-trans-1 m3-trans-2))
-(def m3-all-states '("q1" "q2"))
-(def m3-start-state "q1")
-(def m3-fin-sate (make-final-states "q1"))
-
-(def m3-dfa (make-dfa m3-all-states m3-alph-list m3-trans-table
-                      m3-start-state m3-fin-sate))
 
 (deftest test-m3
-  (is (= "accept empty input"
-         (run-dfa '() m3-dfa))
-      "Empty input should be accepted.")
-  (is (= "accept - q1"
-         (run-dfa '(1 1 0) m3-dfa)))
-  (is (= "un-acceptable - q2"
-         (run-dfa '(1 1 0 1) m3-dfa))))
+  "Uses automata M4 on Page 38, Example 1.9, Fig 10. L(M3) = {w | w is empty string or ends in a 0}."
+  (def m3-alph-list '(0 1))
+  (def m3-trans-1 (make-transition "q1" m2-alph-list '("q1" "q2")))
+  (def m3-trans-2 (make-transition "q2" m2-alph-list '("q1" "q2")))
+  (def m3-trans-table (combine-trans m3-trans-1 m3-trans-2))
+  (def m3-all-states '("q1" "q2"))
+  (def m3-start-state "q1")
+  (def m3-fin-sate (make-final-states "q1"))
+  (def m3-dfa (make-dfa m3-all-states m3-alph-list m3-trans-table
+                        m3-start-state m3-fin-sate))
+
+  (let [empty-state {(keyword "accept empty input") "q1"}
+        accept-state {(keyword "accept") "q1"}
+        un-accept-state {(keyword "un-acceptable") "q2"}]
+    (is (= empty-state (run-dfa '() m3-dfa)))
+    (is (= accept-state (run-dfa '(1 1 0) m3-dfa)))
+    (is (= un-accept-state (run-dfa '(1 1 0 1) m3-dfa))) ))
 
 
 ;; Page 38, Example 1.10, Figure 11.
