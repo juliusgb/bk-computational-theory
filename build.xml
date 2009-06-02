@@ -2,39 +2,60 @@
 
 <project name="bk-computational-theory" default="compile" basedir=".">
   <description>Implements some models in Sipser's book.</description>
-  
+
+  <property file="local.properties"/>
+
   <property name="src.dir" location="src" />
-  <property name="build.dir" location="classes" />
-  <property name="libs.dir" location="libs" />
+  <property name="classes.dir" location="classes" />
+  <property name="libs.dir" location="lib" />
   <property name="tests.dir" location="test" />
   <property name="dist.dir" location="dist" />
-  <property name="comp-theory-jar" location="comp-theory.jar" />
-  
+  <property name="dfa.jar" location="${dist}/dfa.jar" />
+
   <path id="project-classpath">
-	<path location="${basedir}"/>
-    <path location="${build.dir}"/>
+    <pathelement location="${clojure_jar}"/>
+    <pathelement location="${contrib_jar}"/>
+    <path location="${classes.dir}"/>
     <path location="${source.dir}"/>
     <fileset dir="${libs.dir}">
       <include name="*.jar"/>
     </fileset>
   </path>
-  
+
   <target name="clean" description="Remove generated files">
     <delete file="${comp-theory.jar}"/>
-    <delete dir="${build.dir}"/>
+    <delete dir="${classes.dir}"/>
+    <delete dir="${dist.dir}"/>
   </target>
-  
+
   <target name="init" depends="clean">
     <tstamp/>
-    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${dist.dir}" />
   </target>
-  
+
   <target name="compile" depends="init" description="Compile sources">
     <java classname="clojure.lang.Compile" fork="true">
-	  <classpath refid="project-classpath"/>
-      <sysproperty key="clojure.compile.path" value="${build.dir}"/>
-	  <arg value="src.chap01.dfa"/>
-	</java>
-   </target>
+    <classpath>
+      <pathelement location="${basedir}"/>
+      <pathelement location="${source.dir}"/>
+      <pathelement location="${classes.dir}"/>
+      <pathelement location="${clojure_jar}"/>
+      <pathelement location="${contrib_jar}"/>
+    </classpath>
+    <sysproperty key="clojure.compile.path" value="${classses.dir}"/>
+    <arg value="${dfa}"/>
+    </java>
+  </target>
+
+  <target name="test" description="Run tests">
+    <java fork="true" classname="clojure.lang.Script">
+      <classpath>
+          <path refid="project-classpath"/>
+          <path location="${basedir}"/>
+      </classpath>
+      <arg value="${tests.dir}/run.clj"/>
+    </java>
+  </target>
 
 </project>
