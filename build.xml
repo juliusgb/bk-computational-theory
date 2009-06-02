@@ -15,8 +15,10 @@
   <property name="dfa_jar" location="${dist.dir}/dfa.jar" />
 
   <!-- What was in the build.properties -->
-  <property name="app_file" value="${src.dir}/chap01/dfa.clj" />
-  <property name="app" value="src.chap01.dfa" />
+  <!-- Build works with earlier clojure & contrib versions but not with
+       clojure-1.0.0 -->
+  <property name="app_file" value="${src.dir}/chap01/hello.clj" />
+  <property name="app" value="src.chap01.hello" />
   <property name="vendor" value="Juliusgb" />
   <property name="title" value="DFA"/>
   <property name="version" value="0.1" />
