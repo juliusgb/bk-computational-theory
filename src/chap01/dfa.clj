@@ -173,8 +173,6 @@ trans[ition] table."
   (is (= "un-acceptable - q2"
          (run-dfa '(1 1 0 1) m3-dfa))))
 
-(run-tests)
-
 
 ;; Page 38, Example 1.10, Figure 11.
 ;; L(M4) = {w | w starts and ends with a or that start and end with b}.
@@ -193,13 +191,23 @@ trans[ition] table."
 (def m4-dfa (make-dfa m4-all-states m4-alph-list m4-trans-table
                       m4-start-state m4-fin-states))
 
+(deftest test-m4
+  (is (= "accept empty input"
+         (run-dfa '() m4-dfa))
+      "Empty input should be accepted.")
+  (is (= "accept - q1"
+         (run-dfa '("a") m4-dfa)))
+  (is (= "accept - r1"
+         (run-dfa '("b") m4-dfa)))
+  (is (= "accept - q1"
+         (run-dfa '("a" "a") m4-dfa)))
+  (is (= "accept - r1"
+         (run-dfa '("b" "b") m4-dfa)))
+  (is (= "un-acceptable - q2"
+         (run-dfa '("a" "b") m4-dfa)))
+  (is (= "un-acceptable - r2"
+         (run-dfa '("b" "a") m4-dfa)))
+  (is (= "accept - r1"
+         (run-dfa '("b" "a" "b") m4-dfa))))
 
-(println "\nL(M4)")
-(println (run-dfa '() m4-dfa))              ;; yes
-(println (run-dfa '("a") m4-dfa))           ;; yes - q1
-(run-dfa '("b") m4-dfa)           ;; yes - r1
-(run-dfa '("a" "a") m4-dfa)       ;; yes - q1
-(run-dfa '("b" "b") m4-dfa)       ;; yes - r1
-(run-dfa '("a" "b") m4-dfa)       ;; no
-(run-dfa '("b" "a") m4-dfa)       ;; no
-(run-dfa '("b" "a" "b") m4-dfa)   ;; yes - r1
+(run-tests)
