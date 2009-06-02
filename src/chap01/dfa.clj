@@ -59,11 +59,9 @@ trans[ition] table."
   ((fn [state inputs]
      (cond (and (not (contains? (dfa :final-states) state))
                 (empty? inputs))
-;             (println "un-acceptable input")
              (str "un-acceptable - " state)
            (and (contains? (dfa :final-states) state)
                 (empty? inputs))
-;             (println "accept input -" state)
              (str "accept - " state)
            :else
              (recur (state-after-transition state
@@ -77,7 +75,6 @@ trans[ition] table."
   (let [proc-label (first (dfa :start-state))
         start-state (second (dfa :start-state))]
     (if (and (= "unprocessed" proc-label) (empty? inputs))
-;      (println "accept empty input")
       "accept empty input"
       (run-dfa-helper inputs (assoc dfa :start-state start-state)))))
 
