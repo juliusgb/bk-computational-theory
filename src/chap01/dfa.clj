@@ -151,9 +151,6 @@ trans[ition] table."
          (run-dfa '(1 1 0 1) m2-dfa))))
 
 
-(run-tests)
-
-
 ;; Page 38, Example 1.9, Figure 10.
 ;; L(M3) = {w | w is empty string or ends in a 0}.
 (def m3-alph-list '(0 1))
@@ -167,10 +164,16 @@ trans[ition] table."
 (def m3-dfa (make-dfa m3-all-states m3-alph-list m3-trans-table
                       m3-start-state m3-fin-sate))
 
-(println "\nL(M3)")
-(run-dfa '() m3-dfa)         ;; yes
-(run-dfa '(1 1 0) m3-dfa)    ;; yes
-(run-dfa '(1 1 0 1) m3-dfa)  ;; no
+(deftest test-m3
+  (is (= "accept empty input"
+         (run-dfa '() m3-dfa))
+      "Empty input should be accepted.")
+  (is (= "accept - q1"
+         (run-dfa '(1 1 0) m3-dfa)))
+  (is (= "un-acceptable - q2"
+         (run-dfa '(1 1 0 1) m3-dfa))))
+
+(run-tests)
 
 
 ;; Page 38, Example 1.10, Figure 11.
