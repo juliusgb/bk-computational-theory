@@ -34,7 +34,7 @@ the the list of to-states if the machine was in the from-state."
 
 
 (defn state-after-transition [from-state alph-symbol trans-table]
-  "Returns the next state the alph[abet] symbol lead to based on the
+  "Returns the next state the alph[abet] symbol leads to based on the
 trans[ition] table."
   (let [to-states (trans-table (keyword from-state))]
     (to-states (keyword alph-symbol))))
